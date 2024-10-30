@@ -1,2 +1,2 @@
 # OS-Atlas
-OS-ATLAS: A Foundation Action Model For Generalist GUI Agents
+Code and models will be coming soon~

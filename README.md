@@ -121,7 +121,7 @@ model = AutoModel.from_pretrained(
 tokenizer = AutoTokenizer.from_pretrained(path, trust_remote_code=True, use_fast=False)
 
 # set the max number of tiles in `max_num`
-pixel_values = load_image('./exmaples/images/web_dfacd48d-d2c2-492f-b94c-41e6a34ea99f.png', max_num=6).to(torch.bfloat16).cuda()
+pixel_values = load_image('./examples/images/web_dfacd48d-d2c2-492f-b94c-41e6a34ea99f.png', max_num=6).to(torch.bfloat16).cuda()
 generation_config = dict(max_new_tokens=1024, do_sample=True)
 
 question = "In the screenshot of this web page, please give me the coordinates of the element I want to click on according to my instructions(with point).\n\"'Champions League' link\""
@@ -154,7 +154,7 @@ messages = [
         "content": [
             {
                 "type": "image",
-                "image": "./exmaples/images/web_6f93090a-81f6-489e-bb35-1a2838b18c01.png",
+                "image": "./examples/images/web_6f93090a-81f6-489e-bb35-1a2838b18c01.png",
             },
             {"type": "text", "text": "In this UI screenshot, what is the position of the element corresponding to the command \"switch language of current page\" (with bbox)?"},
         ],

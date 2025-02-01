@@ -7,6 +7,9 @@
 </div>
 
 ## Overview
+
+**OS-Atlas** paper is accepted by ICLR 2025.
+
 ![os-atlas](https://github.com/user-attachments/assets/cf2ee020-5e15-4087-9a7e-75cc43662494)
 
 <!-- ## TODO List

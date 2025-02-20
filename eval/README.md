@@ -1,9 +1,11 @@
 # Evaluation and Test Prompts
 
 ## Evaluation Scripts
-We update the evaluation scripts for reference in the path of ``eval_scripts/``. You can evaluate the model response with the following command:
+We update the evaluation scripts for reference in the path of ``eval_scripts/``. Current evaluation scripts support AndroidControl, GUI Odyssey, GUIAct-Web and OmniACT.
+You can evaluate the model response with the following command:
 
 ```python
+# for android control
 python eval_scripts/android_control/evaluation_unify.py
 ```
 

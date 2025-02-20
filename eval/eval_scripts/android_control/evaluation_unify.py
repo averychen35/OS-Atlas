@@ -65,10 +65,10 @@ def evaluate(args):
         gt_action = gt["conversations"][1]["value"].split("actions:\n")[1]
         episode_id = int(gt["image"].split("/")[-1].split("_")[1]) # parse out the episode index
         subsplit_type = next((category for category, ids in test_subsplits.items() if episode_id in ids), None)
-        sample_number_dict[subsplit_type+""] += 1
+        sample_number_dict[subsplit_type] += 1
         sample_number_dict["full"] += 1
 
-        sample_number_dict[gt_action.split()[0]+""] += 1
+        sample_number_dict[gt_action.split()[0]] += 1
 
         gt_action_type = gt_action.split()[0]
         pred_action_type = pred_action.split()[0]
@@ -86,24 +86,24 @@ def evaluate(args):
                 gt_x, gt_y = int(re.findall(r'\d+', gt_action)[0]), int(re.findall(r'\d+', gt_action)[1])
 
                 if math.sqrt((pred_x - gt_x)**2 + (pred_y - gt_y)**2) <=0.14*1000:  # set 14 % of screen size as the ratio
-                    step_acc_res_dict[subsplit_type+""] += 1
+                    step_acc_res_dict[subsplit_type] += 1
                     step_acc_res_dict["full"] += 1
                     step_acc_res_dict[gt_action_type+"_all_match"] += 1
 
             elif gt_action_type == "OPEN_APP":
                 if gt_action==pred_action or calculate_f1_score(pred_action.split()[1], gt_action.split()[1])>0.5:
-                    step_acc_res_dict[subsplit_type+""] += 1
+                    step_acc_res_dict[subsplit_type] += 1
                     step_acc_res_dict["full"] += 1
                     step_acc_res_dict[gt_action_type+"_all_match"] += 1
 
             elif gt_action_type == "TYPE":
                 if pred_action==gt_action or calculate_f1_score(pred_action.split()[1], gt_action.split()[1])>0.5:
-                    step_acc_res_dict[subsplit_type+""] += 1
+                    step_acc_res_dict[subsplit_type] += 1
                     step_acc_res_dict["full"] += 1
                     step_acc_res_dict[gt_action_type+"_all_match"] += 1
 
             elif gt_action==pred_action:  # evaluate other types
-                step_acc_res_dict[subsplit_type+""] += 1
+                step_acc_res_dict[subsplit_type] += 1
                 step_acc_res_dict["full"] += 1
                 step_acc_res_dict[gt_action_type+"_all_match"] += 1
 

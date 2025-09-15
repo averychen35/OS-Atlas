@@ -4,7 +4,9 @@ import torchvision.transforms as T
 import pdb
 import inspect
 from PIL import Image
+import matplotlib.pyplot as plt
 from torchvision.transforms.functional import InterpolationMode
+from attention_heatmap import construct_attention_heatmap, create_attention_overlay
 from transformers import AutoModel, AutoTokenizer
 IMAGENET_MEAN = (0.485, 0.456, 0.406)
 IMAGENET_STD = (0.229, 0.224, 0.225)
@@ -98,5 +100,54 @@ print("calling model.chat")
 question = "In the screenshot of this web page, please give me the coordinates of the element I want to click on according to my instructions(with point).\n\"'Champions League' link\""
 #pdb.set_trace()
 print(f"model.chat method file: {inspect.getfile(model.chat)}")
-response, history, return_attention = model.chat(tokenizer, pixel_values, question, generation_config, history=None, return_history=True, num_patches_list=None, IMG_START_TOKEN='<img>', IMG_END_TOKEN='</img>', IMG_CONTEXT_TOKEN='<IMG_CONTEXT>', verbose=False, return_attention=True)
-print(f'User: {question}\nAssistant: {response} attention_scores: {return_attention}')
+
+#response, history = model.chat(tokenizer, pixel_values, question, generation_config, history=None, return_history=True, num_patches_list=None, IMG_START_TOKEN='<img>', IMG_END_TOKEN='</img>', IMG_CONTEXT_TOKEN='<IMG_CONTEXT>', verbose=False)
+#print(f'User: {question}\nAssistant: {response}')
+#response, history, return_attention = model.chat(tokenizer, pixel_values, question, generation_config, history=None, return_history=True, num_patches_list=None, IMG_START_TOKEN='<img>', IMG_END_TOKEN='</img>', IMG_CONTEXT_TOKEN='<IMG_CONTEXT>', verbose=False, return_attention=True)
+#print(f'User: {question}\nAssistant: {response} attention_scores: {return_attention}')
+
+
+# Use it
+try:
+    response = model.chat_with_attention_visualization(
+            tokenizer=tokenizer,
+            pixel_values=pixel_values,
+            question=question,
+            generation_config=generation_config,
+            save_path="./new_attention_visualizations/",
+            verbose=True
+        )
+    print(f"Response: {response}")
+    print("Attention maps saved to ./attention_visualizations/")
+        
+except Exception as e:
+    print(f"Error during chat with visualization: {e}")
+
+
+
+"""
+# Now create the heatmap:
+attention_map = construct_attention_heatmap(return_attention, method="mean")
+
+# Simple visualization
+plt.figure(figsize=(10, 5))
+
+plt.subplot(1, 2, 1)
+plt.imshow(attention_map, cmap='hot', interpolation='bilinear')
+plt.title('Attention Heatmap')
+plt.colorbar()
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+# If you have the original image:
+image_file = './examples/images/web_dfacd48d-d2c2-492f-b94c-41e6a34ea99f.png'
+your_original_image = Image.open(image_file)
+plt.imshow(your_original_image)
+overlay = create_attention_overlay(your_original_image, attention_map)
+plt.imshow(overlay)
+plt.title('Image + Attention Overlay')
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+"""

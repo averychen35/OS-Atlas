@@ -8,6 +8,12 @@ import matplotlib.pyplot as plt
 from torchvision.transforms.functional import InterpolationMode
 from attention_heatmap import construct_attention_heatmap, create_attention_overlay
 from transformers import AutoModel, AutoTokenizer
+try:
+    from vision_attention_mapper import VisionAttentionMapper
+    ENHANCED_VISUALIZATION_AVAILABLE = True
+except ImportError:
+    print("Warning: VisionAttentionMapper not available. Using basic visualization only.")
+    ENHANCED_VISUALIZATION_AVAILABLE = False
 IMAGENET_MEAN = (0.485, 0.456, 0.406)
 IMAGENET_STD = (0.229, 0.224, 0.225)
 
@@ -57,6 +63,11 @@ def dynamic_preprocess(image, min_num=1, max_num=12, image_size=448, use_thumbna
 
     # resize the image
     resized_img = image.resize((target_width, target_height))
+    with open('./examples/images/resized_image.png', 'wb') as f:
+        resized_img.save(f)
+    
+    # TODO: save this resizd image to use later
+    print("resized_img: " + str(resized_img.size))
     processed_images = []
     for i in range(blocks):
         box = (
